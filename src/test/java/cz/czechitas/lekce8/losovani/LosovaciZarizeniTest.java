@@ -42,20 +42,20 @@ class LosovaciZarizeniTest {
   private void testujSazkuHlavniTah(List<Integer> vylosovanaCisla) {
     assertEquals(6, vylosovanaCisla.size(), "Vylosovaných čísle není 6.");
     assertTrue(vylosovanaCisla.stream()
-                    .allMatch(cislo -> cislo >= 1 && cislo <= 49),
+                    .allMatch(cislo -> cislo >= 1 && cislo <= 49),//je take anyMatch, none Match-vyhodnocuje pravdivost, zda plati nejake pravidlo
             () -> String.format(
                     "Vylosovaná čísla nejsou v rozsahu 1–49. Nejmenší tažené číslo: %d. největší tažené číslo: %d.",
-                    vylosovanaCisla.stream().min(Integer::compareTo).get(),
-                    vylosovanaCisla.stream().max(Integer::compareTo).get()
+                    vylosovanaCisla.stream().min(Integer::compareTo).get(),//ziska ze streamu nejmensi hodnotu a dela porovnavani. umi tak porovnat i jine typy objektu
+                    vylosovanaCisla.stream().max(Integer::compareTo).get() //tady ziska max hodnotu. umi treba i abecedne u stringu
             ));
 
     assertEquals(6, vylosovanaCisla.stream()
                     .distinct()
-                    .count(),
+                    .count(), //vraci pocet prvku ktere jsou ve streamu, funguje jen pro streamy kde je konecny pocet prvku, ne nekonecny
             () ->
                     String.format("Vylosovaná čísla nejsou unikátní: %s", vylosovanaCisla.stream()
-                            .map(cislo -> Integer.toString(cislo))
-                            .collect(Collectors.joining(", ")))
+                            .map(cislo -> Integer.toString(cislo)) //cislo na vstupu prevede na text
+                            .collect(Collectors.joining(", ")))   //vsechny prvky streamu posbira a udela z nich jeden objekt
     );
   }
 

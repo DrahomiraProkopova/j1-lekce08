@@ -22,8 +22,8 @@ public class LosovaciZarizeni {
    * @return Stream vylosovaných čísel.
    */
   public IntStream losujSeznamCisel(int minimum, int maximum, int pocet) {
-    return random.ints(pocet, minimum, maximum + 1);
-  }
+    return random.ints(pocet, minimum, maximum + 1); //ints vraci nahodna cisla, ma parametry a dle nich ridim, jaka nahodna cisla dostanu
+  }         //druhy parametr musi byt vzdy o 1 vetsi nez to max vylosovane cislo, pozor ints muze vracet i opakovane stejne cislo., proto nelze pouzit logickz u sazky
 
   /**
    * Losuje 6 čísel v rozmezí 1–49.
@@ -34,11 +34,12 @@ public class LosovaciZarizeni {
    */
   public List<Integer> losujSazkuHlavniTah() {
     return random.ints(1, 49 + 1) // 49 + 1, protože parametr horní hranice musí být mimo rozsah vracených hodnot.
-            .distinct()
-            .limit(6)
-            .boxed()
-            .collect(Collectors.toList());
-  }
+            .distinct()    //diky tomu se tam neopakuji cisla, odstrabuje duplicitni cisla a pak udela dalsi Stream
+            .limit(6)    //omezi kolik prvku tam muze byt. jakmile to dojde k 6 jedinecnym cislum,tak stopne generovani
+            .boxed()    //prevadi Stream z primitiv int na Integer, protoze chci nakonec list a ten v sobe umi mit jen objekty, coz je Integer
+            .collect(Collectors.toList()); //posbira prvky Streamu a vlozi do Listu a List vrati
+  }         //ints je specielne fce randomu
+  //trida Optional- doplnuje se se s Stringama, neni tam pak null hodnota
 
   /**
    * Losuje 6 čísel v rozmezí 1–49.
@@ -65,7 +66,7 @@ public class LosovaciZarizeni {
    */
   public IntStream losujSeznamSudychCisel(int minimum, int maximum, int pocet) {
     return random.ints(pocet, minimum, maximum)
-            .filter(cislo -> cislo % 2 == 0);
+            .filter(cislo -> cislo % 2 == 0); //rozhoduje, zda v tom Straemu zustane nebo ho vyhodi pryc, tadz, zda je cislo delitelne 2. vysledek je tedy stream sudych cisel
   }
 
   /**
@@ -81,6 +82,7 @@ public class LosovaciZarizeni {
   public IntStream losujSeznamSudychCiselJakoMapa(int minimum, int maximum, int pocet) {
     return random.ints(pocet, minimum / 2, maximum / 2)
             .map(cislo -> cislo * 2);
+    //transformuje(mapuje) objekt ktery jsem dostal na jiny
   }
 
   /**
@@ -88,7 +90,8 @@ public class LosovaciZarizeni {
    */
   public void vypisTazenaCisla(IntStream vylosovanaCisla) {
     System.out.println("Dnešní vylosovaná čísla:");
-    vylosovanaCisla.forEachOrdered(this::vypisVylosovaneCislo);
+    vylosovanaCisla.forEachOrdered(this::vypisVylosovaneCislo);//priklad reference na metodu.
+    //volam metodu forEachOrdered-ordedered-musi se zachovat poradi prvku ve streamu oproti foreach
   }
 
   /**
